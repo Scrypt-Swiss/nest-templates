@@ -8,7 +8,7 @@ export class <%= singular(classify(name)) %> {
 import {PartialType, OmitType} from '@nestjs/swagger'
 import {Base} from '../base'
 
-const PROTECTED_KEYS: (keyof <%= singular(classify(name)) %>)[] = ['id', 'updatedAt', 'createdAt']
+const PROTECTED_KEYS = ['id', 'updatedAt', 'createdAt'] as const satisfies (keyof <%= singular(classify(name)) %>)[]
 type ProtectedKeys = typeof PROTECTED_KEYS[number]
 
 @Entity()
