@@ -16,17 +16,15 @@
     "clean:all": "rimraf node_modules",
     "preclean:all": "npm run clean",
     "clean:dist": "rimraf dist",
-    "copy:collection": "cpx src/collection.json dist && cpx 'src/lib/**/schema.json' dist/lib",
-    "copy:lib": "cpx 'src/lib/**/{files,workspace}/**/{.*,*}' dist/lib",
+    "copy:collection": "cpy src/collection.json dist --flat && cpy 'src/lib/**/schema.json' dist/lib",
+    "copy:lib": "cpy 'src/lib/**/{files,workspace}/**/{.*,*}' dist/lib",
     "lint": "eslint '{src,test}/**/*.ts' --fix",
     "prepublish:next": "npm run build",
     "publish:next": "npm publish --access public --tag next",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
     "test": "npm run clean && NODE_ENV=test jest -w 1 --no-cache --config jest.json",
-    "test:dev": "NODE_ENV=test npm run -s test -- --watchAll",
-    "prerelease": "npm run build",
-    "release": "release-it"
+    "test:dev": "NODE_ENV=test npm run -s test -- --watchAll"
   },
   "repository": {
     "type": "git",
@@ -55,11 +53,10 @@
     "@commitlint/cli": "19.3.0",
     "@commitlint/config-angular": "19.3.0",
     "@types/fs-extra": "11.0.4",
-    "cpx": "1.5.0",
+    "cpy-cli": "5.0.0",
     "gulp": "5.0.0",
     "gulp-clean": "0.4.0",
-    "nyc": "17.0.0",
-    "release-it": "17.5.0"
+    "nyc": "17.0.0"
   },
   "schematics": "./dist/collection.json",
   "nyc": {
