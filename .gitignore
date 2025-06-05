@@ -45,3 +45,11 @@
 !.vscode/tasks.json
 **/yarn-debug.log*
 **/yarn-error.log*
+**/cookies.json
+cookies.json
+**/.data/
+.cursor/rules/nx-rules.mdc
+.cursor/rules/nx-rules.mdc
+.cursor/rules/personal-rules.mdc
+.github/instructions/nx.instructions.md
+.github/instructions/nx.instructions.md
