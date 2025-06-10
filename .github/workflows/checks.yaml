@@ -1,0 +1,12 @@
+name: SAST and Code Quality Checks
+
+on:
+  pull_request:
+    branches: 
+      - develop
+
+jobs:
+  call-reusable-workflow:
+    uses: Scrypt-Swiss/github-action-reusable-workflow/.github/workflows/sonarqube.yml@master
+    secrets:
+      SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
