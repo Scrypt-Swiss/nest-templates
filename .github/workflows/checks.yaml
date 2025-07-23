@@ -1,0 +1,26 @@
+name: SAST and Code Quality Checks
+
+on:
+  pull_request:
+    branches: 
+      - develop
+
+jobs:
+  call-reusable-workflow:
+    uses: Scrypt-Swiss/github-action-reusable-workflow/.github/workflows/sonarqube.yml@master
+    secrets:
+      SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+  call-trufflehog-reusable-workflow:
+    if: github.event.pull_request.draft == false
+    uses: Scrypt-Swiss/github-action-reusable-workflow/.github/workflows/trufflehog.yml@master
+    secrets:
+      GH_ACTIONS_TOKEN:    ${{ secrets.GH_ACTIONS_TOKEN }}
+      GH_ACTIONS_USERNAME: ${{ secrets.GH_ACTIONS_USERNAME }}
+  call-trivy-reusable-workflow:
+    if: github.event.pull_request.draft == false
+    uses: Scrypt-Swiss/github-action-reusable-workflow/.github/workflows/trivy.yml@master
+    secrets:
+      GH_ACTIONS_TOKEN:    ${{ secrets.GH_ACTIONS_TOKEN }}
+      GH_ACTIONS_USERNAME: ${{ secrets.GH_ACTIONS_USERNAME }}
+
+      
