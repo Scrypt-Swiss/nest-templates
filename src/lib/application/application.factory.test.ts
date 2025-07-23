@@ -1,7 +1,4 @@
-import {
-  SchematicTestRunner,
-  UnitTestTree,
-} from '@angular-devkit/schematics/testing'
+import {SchematicTestRunner, UnitTestTree} from '@angular-devkit/schematics/testing'
 import * as path from 'path'
 import {ApplicationOptions} from './application.schema'
 
@@ -13,7 +10,6 @@ const expected_files = [
   'tsconfig.json',
   '.dockerignore',
   '.gitignore',
-  '.prettierrc',
   'Dockerfile',
   'docker-compose.yaml',
   'src/app.module.ts',
@@ -24,23 +20,22 @@ const expected_files = [
 ]
 
 const expected_jsfiles = [
-  ".babelrc",
+  '.babelrc',
   'README.md',
-  "index.js",
-  "jsconfig.json",
-  "nest-cli.json",
-  "nodemon.json",
-  "package.json",
+  'index.js',
+  'jsconfig.json',
+  'nest-cli.json',
+  'nodemon.json',
+  'package.json',
   '.dockerignore',
-  ".gitignore",
-  ".prettierrc",
+  '.gitignore',
   'Dockerfile',
   'docker-compose.yaml',
-  "src/app.module.js",
-  "src/exception-filter.js",
-  "src/main.js",
-  "test/app.e2e-spec.js",
-  "test/jest-e2e.json",
+  'src/app.module.js',
+  'src/exception-filter.js',
+  'src/main.js',
+  'test/app.e2e-spec.js',
+  'test/jest-e2e.json',
 ]
 
 describe('Application Factory', () => {

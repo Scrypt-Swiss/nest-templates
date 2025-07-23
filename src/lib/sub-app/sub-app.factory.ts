@@ -53,20 +53,17 @@ function getAppNameFromPackageJson(): string {
 }
 
 function transform(options: SubAppOptions): SubAppOptions {
-
   const target: SubAppOptions = Object.assign({}, options)
-  const defaultSourceRoot =
-    options.rootDir !== undefined ? options.rootDir : DEFAULT_APPS_PATH
+  const defaultSourceRoot = options.rootDir !== undefined ? options.rootDir : DEFAULT_APPS_PATH
 
   if (!target.name) {
     target.name = DEFAULT_APP_NAME
   }
   target.language = !!target.language ? target.language : DEFAULT_LANGUAGE
   target.name = normalizeToKebabOrSnakeCase(target.name)
-  target.path =
-    target.path !== undefined
-      ? join(normalize(defaultSourceRoot), target.path)
-      : normalize(defaultSourceRoot)
+  target.path = target.path !== undefined
+    ? join(normalize(defaultSourceRoot), target.path)
+    : normalize(defaultSourceRoot)
   target.packageManager ??= 'npm'
   target.author ??= ''
   target.description ??= ''
@@ -155,15 +152,15 @@ function updateNpmScripts(
   const defaultStartScriptName = 'start:prod'
   const defaultTestScriptName = 'test:e2e'
   if (
-    !scripts[defaultTestScriptName] &&
-    !scripts[defaultFormatScriptName] &&
-    !scripts[defaultStartScriptName]
+    !scripts[defaultTestScriptName]
+    && !scripts[defaultFormatScriptName]
+    && !scripts[defaultStartScriptName]
   ) {
     return
   }
   if (
-    scripts[defaultTestScriptName] &&
-    scripts[defaultTestScriptName].indexOf(options.path as string) < 0
+    scripts[defaultTestScriptName]
+    && scripts[defaultTestScriptName].indexOf(options.path as string) < 0
   ) {
     const defaultTestDir = 'test'
     const newTestDir = join(
@@ -176,21 +173,10 @@ function updateNpmScripts(
     ).replace(defaultTestDir, newTestDir)
   }
   if (
-    scripts[defaultFormatScriptName] &&
-    scripts[defaultFormatScriptName].indexOf(DEFAULT_PATH_NAME) >= 0
+    scripts[defaultStartScriptName]
+    && scripts[defaultStartScriptName].indexOf('dist/main') >= 0
   ) {
-    const defaultSourceRoot =
-      options.rootDir !== undefined ? options.rootDir : DEFAULT_APPS_PATH
-    scripts[
-      defaultFormatScriptName
-    ] = `prettier --write "${defaultSourceRoot}/**/*.ts" "${DEFAULT_LIB_PATH}/**/*.ts"`
-  }
-  if (
-    scripts[defaultStartScriptName] &&
-    scripts[defaultStartScriptName].indexOf('dist/main') >= 0
-  ) {
-    const defaultSourceRoot =
-      options.rootDir !== undefined ? options.rootDir : DEFAULT_APPS_PATH
+    const defaultSourceRoot = options.rootDir !== undefined ? options.rootDir : DEFAULT_APPS_PATH
     scripts[
       defaultStartScriptName
     ] = `node dist/${defaultSourceRoot}/${defaultAppName}/main`
@@ -208,8 +194,7 @@ function updateJestOptions(
     jestOptions.rootDir = '.'
     jestOptions.coverageDirectory = './coverage'
   }
-  const defaultSourceRoot =
-    options.rootDir !== undefined ? options.rootDir : DEFAULT_APPS_PATH
+  const defaultSourceRoot = options.rootDir !== undefined ? options.rootDir : DEFAULT_APPS_PATH
   const jestSourceRoot = `<rootDir>/${defaultSourceRoot}/`
   if (!jestOptions.roots) {
     jestOptions.roots = [jestSourceRoot]
@@ -217,10 +202,9 @@ function updateJestOptions(
     jestOptions.roots.push(jestSourceRoot)
 
     const originalSourceRoot = `<rootDir>/src/`
-    const originalSourceRootIndex =
-      jestOptions.roots.indexOf(originalSourceRoot)
+    const originalSourceRootIndex = jestOptions.roots.indexOf(originalSourceRoot)
     if (originalSourceRootIndex >= 0) {
-      (jestOptions.roots as string[]).splice(originalSourceRootIndex, 1)
+      ;(jestOptions.roots as string[]).splice(originalSourceRootIndex, 1)
     }
   }
 }
@@ -364,6 +348,6 @@ function generate(options: SubAppOptions): Rule {
         ...options,
       }),
       move(path),
-    ]))
+    ])),
   ])
 }

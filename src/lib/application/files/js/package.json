@@ -6,7 +6,6 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "format": "prettier --write \"**/*.js\"",
     "start": "babel-node index.js",
     "start:dev": "nodemon",
     "test": "jest",
@@ -22,7 +21,6 @@
     "class-validator": "*",
     "reflect-metadata": "*",
     "rxjs": "*"
-
   },
   "devDependencies": {
     "@nestjs/testing": "*",
@@ -36,7 +34,6 @@
     "@babel/runtime": "*",
     "jest": "*",
     "nodemon": "*",
-    "prettier": "*",
     "supertest": "*"
   },
   "jest": {
