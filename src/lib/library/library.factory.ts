@@ -1,26 +1,9 @@
-import { join, normalize, Path, strings } from '@angular-devkit/core'
-import {
-  apply,
-  branchAndMerge,
-  chain,
-  mergeWith,
-  move,
-  Rule,
-  SchematicsException,
-  Source,
-  template,
-  Tree,
-  url,
-} from '@angular-devkit/schematics'
-import { parse } from 'jsonc-parser'
-import { normalizeToKebabOrSnakeCase } from '../../utils/formatting'
-import {
-  DEFAULT_LANGUAGE,
-  DEFAULT_LIB_PATH,
-  DEFAULT_PATH_NAME,
-  PROJECT_TYPE,
-} from '../defaults'
-import { LibraryOptions } from './library.schema'
+import {join, normalize, Path, strings} from '@angular-devkit/core'
+import {apply, branchAndMerge, chain, mergeWith, move, Rule, SchematicsException, Source, template, Tree, url} from '@angular-devkit/schematics'
+import {parse} from 'jsonc-parser'
+import {normalizeToKebabOrSnakeCase} from '../../utils/formatting'
+import {DEFAULT_LANGUAGE, DEFAULT_LIB_PATH, DEFAULT_PATH_NAME, PROJECT_TYPE} from '../defaults'
+import {LibraryOptions} from './library.schema'
 
 type UpdateJsonFn<T> = (obj: T) => T | void
 interface TsConfigPartialType {
@@ -45,18 +28,16 @@ export function main(options: LibraryOptions): Rule {
 
 function transform(options: LibraryOptions): LibraryOptions {
   const target: LibraryOptions = Object.assign({}, options)
-  const defaultSourceRoot =
-    options.rootDir !== undefined ? options.rootDir : DEFAULT_LIB_PATH
+  const defaultSourceRoot = options.rootDir !== undefined ? options.rootDir : DEFAULT_LIB_PATH
 
   if (!target.name) {
     throw new SchematicsException('Option (name) is required.')
   }
   target.language = !!target.language ? target.language : DEFAULT_LANGUAGE
   target.name = normalizeToKebabOrSnakeCase(target.name)
-  target.path =
-    target.path !== undefined
-      ? join(normalize(defaultSourceRoot), target.path)
-      : normalize(defaultSourceRoot)
+  target.path = target.path !== undefined
+    ? join(normalize(defaultSourceRoot), target.path)
+    : normalize(defaultSourceRoot)
 
   target.prefix = target.prefix || '@app'
   return target
@@ -76,7 +57,6 @@ function updatePackageJson(options: LibraryOptions) {
       host,
       'package.json',
       (packageJson: Record<string, any>) => {
-        updateNpmScripts(packageJson.scripts, options)
         updateJestConfig(packageJson.jest, options, packageKey, distRoot)
       },
     )
@@ -96,8 +76,7 @@ function updateJestConfig(
     jestOptions.rootDir = '.'
     jestOptions.coverageDirectory = './coverage'
   }
-  const defaultSourceRoot =
-    options.rootDir !== undefined ? options.rootDir : DEFAULT_LIB_PATH
+  const defaultSourceRoot = options.rootDir !== undefined ? options.rootDir : DEFAULT_LIB_PATH
 
   const jestSourceRoot = `<rootDir>/${defaultSourceRoot}/`
   if (!jestOptions.roots) {
@@ -112,30 +91,6 @@ function updateJestConfig(
   const packageKeyRegex = '^' + packageKey + '(|/.*)$'
   const packageRoot = join('<rootDir>' as Path, distRoot)
   jestOptions.moduleNameMapper[packageKeyRegex] = join(packageRoot, '$1')
-}
-
-function updateNpmScripts(
-  scripts: Record<string, any>,
-  options: LibraryOptions,
-) {
-  if (!scripts) {
-    return
-  }
-  const defaultFormatScriptName = 'format'
-  if (!scripts[defaultFormatScriptName]) {
-    return
-  }
-
-  if (
-    scripts[defaultFormatScriptName] &&
-    scripts[defaultFormatScriptName].indexOf(DEFAULT_PATH_NAME) >= 0
-  ) {
-    const defaultSourceRoot =
-      options.rootDir !== undefined ? options.rootDir : DEFAULT_LIB_PATH
-    scripts[
-      defaultFormatScriptName
-    ] = `prettier --write "src/**/*.ts" "test/**/*.ts" "${defaultSourceRoot}/**/*.ts"`
-  }
 }
 
 function updateJestEndToEnd(options: LibraryOptions) {
