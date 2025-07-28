@@ -7,7 +7,7 @@ RUN npx nx run <%= name %>:build
 ENV NODE_ENV 'production'
 RUN find -name node_modules -prune -exec rm -rf {} \;
 RUN npm install
-WORKDIR <%= path %>/<%= name %>
+WORKDIR /app/<%= path %>/<%= name %>
 RUN nexe --build --python=$(which python3) -r "temp" -r "dist/migrations" -o app dist/src/main.js
 
 FROM mwaeckerlin/nexe as production
