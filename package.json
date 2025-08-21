@@ -18,7 +18,6 @@
     "clean:dist": "rimraf dist",
     "copy:collection": "cpy src/collection.json dist --flat && cpy 'src/lib/**/schema.json' dist/lib",
     "copy:lib": "cpy 'src/lib/**/{files,workspace}/**/{.*,*}' dist/lib",
-    "lint": "eslint '{src,test}/**/*.ts' --fix",
     "prepublish:next": "npm run build",
     "publish:next": "npm publish --access public --tag next",
     "prepublish:npm": "npm run build",
