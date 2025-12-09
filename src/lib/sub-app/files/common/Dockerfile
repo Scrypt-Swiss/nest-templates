@@ -10,6 +10,6 @@ RUN npm ci --ignore-scripts --omit=dev
 WORKDIR /app/<%= path %>/<%= name %>
 RUN nexe --build --python=$(which python3) -r "temp" -r "dist/migrations" -o app dist/src/main.js
 
-FROM mwaeckerlin/nexe as production
+FROM ${DOCKER_REPOSITORY}/platform/base/nodejs-20-runtime-nexe:2.0.0 AS production
 EXPOSE <%= port %>
 COPY --from=build /app/<%= path %>/<%= name %>/app /app/app
