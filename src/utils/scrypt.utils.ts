@@ -14,7 +14,7 @@ export const readJson = (tree: Tree, options: any, name: RegExp, dir: string = '
 
 export const readYaml = (tree: Tree, options: any, name: RegExp, dir: string = '') => {
   const path = find(tree, options, name, dir)
-  return {path, content: yaml.load(tree.read(path).toString())}
+  return {path, content: yaml.load(tree.read(path).toString(), {schema: yaml.DEFAULT_SCHEMA})}
 }
 
 export const find = (tree: Tree, options: any, name: RegExp, dir: string = '') => {

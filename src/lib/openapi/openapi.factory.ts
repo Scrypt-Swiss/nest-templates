@@ -204,7 +204,7 @@ const readJson = (tree: Tree, options: any, name: RegExp | string, dir: string =
 
 const readYaml = (tree: Tree, options: any, name: RegExp | string, dir: string = '') => {
     const path = find(tree, options, name, dir)
-    return { path, content: yaml.load(tree.read(path).toString()) }
+    return { path, content: yaml.load(tree.read(path).toString(), {schema: yaml.JSON_SCHEMA}) }
 }
 
 const find = (tree: Tree, options: any, name: RegExp | string, dir: string = '') => {
