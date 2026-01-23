@@ -46,7 +46,7 @@ Also Generates:
 
     nest new -c @scrypt-swiss/nest-templates -p npm -l ts test
     cd test
-    npm install
+    npm ci --ignore-scripts
     npm run start:debug
 
 Or:
@@ -61,7 +61,7 @@ Create a database, run initial migration (if you don't use SQLitem then you need
     cd test
     nest g -c @scrypt-swiss/nest-templates db
     nest g -c @scrypt-swiss/nest-templates res user
-    npm install
+    npm ci --ignore-scripts
     npm run build
     docker-compose up -d db
     npm run migration:initial

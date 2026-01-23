@@ -1,13 +1,13 @@
 FROM mwaeckerlin/nodejs-build AS build
 RUN mkdir temp
-COPY --chown=${BUILD_USER} package.json package-lock.json ./
-RUN npm install
+COPY --chown=${BUILD_USER} package.json package-lock.json .npmrc ./
+RUN npm ci --ignore-scripts
 COPY --chown=${BUILD_USER} . .
 RUN npm run build
 
 FROM mwaeckerlin/nodejs-build AS node-modules
-COPY --chown=${BUILD_USER} package.json package-lock.json ./
-RUN npm install
+COPY --chown=${BUILD_USER} package.json package-lock.json .npmrc ./
+RUN npm ci --ignore-scripts --omit=dev
 
 FROM mwaeckerlin/nodejs as production
 EXPOSE 4000
