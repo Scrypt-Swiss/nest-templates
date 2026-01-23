@@ -105,13 +105,17 @@ export function main(options: any): Rule {
 function resolveRefs(json, original = null) {
     original ??= json
     for (let k in json) {
+        if (k === '__proto__' || k === 'constructor' || k === 'prototype') continue  // Prevent prototype pollution
         if (k === '$ref' && json[k].match(/^#\//)) {
             let tmp = original
             let arr = json[k].split('/')
             json.dto = arr[arr.length - 1]
             while (arr.shift(), arr.length) tmp = tmp[arr[0]]
             delete json[k]
-            for (let k2 in tmp) json[k2] = tmp[k2]
+            for (let k2 in tmp) {
+                if (k2 === '__proto__' || k2 === 'constructor' || k2 === 'prototype') continue  // Prevent prototype pollution
+                json[k2] = tmp[k2]
+            }
         } else if (typeof json[k] === 'object') {
             json[k] = resolveRefs(json[k], original)
         }
