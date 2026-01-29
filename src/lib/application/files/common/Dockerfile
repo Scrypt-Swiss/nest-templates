@@ -1,16 +1,20 @@
-FROM mwaeckerlin/nodejs-build AS build
+FROM node:20-alpine AS build
+WORKDIR /app
 RUN mkdir temp
-COPY --chown=${BUILD_USER} package.json package-lock.json ./
+COPY package.json package-lock.json ./
 RUN npm install
-COPY --chown=${BUILD_USER} . .
+COPY . .
 RUN npm run build
 
-FROM mwaeckerlin/nodejs-build AS node-modules
-COPY --chown=${BUILD_USER} package.json package-lock.json ./
-RUN npm install
+FROM node:20-alpine AS node-modules
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install --omit=dev
 
-FROM mwaeckerlin/nodejs as production
+FROM gcr.io/distroless/nodejs20-debian12:nonroot AS production
+WORKDIR /app
 EXPOSE 4000
-COPY --from=build --chown=${RUN_USER} /app/temp /app/temp
+COPY --from=build /app/temp /app/temp
 COPY --from=build /app/dist /app/dist
-COPY --from=node-modules /app/node_modules node_modules
+COPY --from=node-modules /app/node_modules /app/node_modules
+CMD ["dist/src/main.js"]
